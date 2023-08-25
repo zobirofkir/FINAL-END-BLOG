@@ -5,14 +5,14 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
  
-$GetBlogPosts = $database->prepare("SELECT * FROM blog_posts_sécurité");
+$GetBlogPosts = $database->prepare("SELECT * FROM blog_posts_securite");
 $GetBlogPosts->execute();
 $blogPosts = $GetBlogPosts->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($blogPosts as $post) {
     echo '<article class="blog_item">';
     echo '<div class="blog_item_img">';
-    echo '<div style="text-align: center;"><h2>Hello, world</h2></div><br>';
+    echo '<div style="text-align: center;"><h2>Hello From Security Blog</h2></div><br>';
     echo '<img class="card-img rounded-0" src="data:image/jpeg;base64,' . base64_encode($post['image']) . '" alt="">';
     echo '<a href="single-blog.html" class="blog_item_date">';
     echo '<h3>' . $post['date_pub'] . '</h3>';

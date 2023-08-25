@@ -31,7 +31,7 @@ if (isset($_POST["post_blog_sécurité"])) {
             $filename = uniqid() . '-' . $_FILES["image"]["name"];
             
             // Prepare and execute the SQL query
-            $PostDataSécurité = $database->prepare("INSERT INTO blog_posts_sécurité(image, filename, date_pub, month_pub, title, paragraph) VALUES (:image, :filename, :date_pub, :month_pub, :title, :paragraph)");
+            $PostDataSécurité = $database->prepare("INSERT INTO blog_posts_securite(image, filename, date_pub, month_pub, title, paragraph) VALUES (:image, :filename, :date_pub, :month_pub, :title, :paragraph)");
             $PostDataSécurité->bindParam(":image", $image);
             $PostDataSécurité->bindParam(":filename", $filename);
             $PostDataSécurité->bindParam(":date_pub", $date_pub);
@@ -40,7 +40,7 @@ if (isset($_POST["post_blog_sécurité"])) {
             $PostDataSécurité->bindParam(":paragraph", $paragraph);
             
             if ($PostDataSécurité->execute()) {
-                $successSécurité = "This blog has been created (Cloud).";
+                $successSécurité = "This blog has been created (security).";
             } else {
                 $errorsécurité = "Error creating this blog!";
             }
