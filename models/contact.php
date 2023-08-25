@@ -15,11 +15,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["contact"])) {
-    $message = filter_var($_POST["message"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $name = filter_var($_POST["name"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    // Sanitize and encode user input
+    $message = filter_var($_POST["message"], FILTER_SANITIZE_SPECIAL_CHARS);
+    $name = filter_var($_POST["name"], FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    $subject = filter_var($_POST["subject"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $subject = filter_var($_POST["subject"], FILTER_SANITIZE_SPECIAL_CHARS);
 
+    // Prepare user input for database insertion
     $message = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
     $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
     $email = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
@@ -43,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["contact"])) {
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
-            $sender_name = filter_var($name, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $sender_name = filter_var($name, FILTER_SANITIZE_SPECIAL_CHARS);
             $sender_email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
             $mail->setFrom($sender_email, $sender_name);
@@ -58,9 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["contact"])) {
             echo "Database error: Unable to insert contact information.";
         }
     } catch (PDOException $e) {
-        echo "error";
+        echo "Database error: " . $e->getMessage();
     } catch (Exception $e) {
-        echo "error";
+        echo "Email error: " . $e->getMessage();
     }
 }
 ?>
