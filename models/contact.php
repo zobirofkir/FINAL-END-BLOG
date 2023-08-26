@@ -17,7 +17,7 @@ use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["contact"])) {
     // Sanitize and encode user input
-    $message = filter_var($_POST["message"], FILTER_SANITIZE_SPECIAL_CHARS);
+    $message = filter_var($_POST["message"], FILTER_SANITIZE_SPECIAL_CHARS); 
     $name = filter_var($_POST["name"], FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $subject = filter_var($_POST["subject"], FILTER_SANITIZE_SPECIAL_CHARS);

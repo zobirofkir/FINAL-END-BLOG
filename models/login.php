@@ -8,8 +8,8 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 include "../connection/connection.php";
 if (isset($_POST["login"])) {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+    $password =filter_var($_POST["password"], FILTER_SANITIZE_SPECIAL_CHARS);
 
     // Step 1: Hash the password before storing it
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);

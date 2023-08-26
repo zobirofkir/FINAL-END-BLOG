@@ -8,10 +8,10 @@ header("Access-Control-Allow-Headers: Content-Type");
 include "../connection/connection.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["send_comment"])) {
-    $comment = $_POST["comment"];
-    $name = $_POST["name"];
-    $email = $_POST["email"];
-    $website = $_POST["website"];
+    $comment = filter_var($_POST["comment"], FILTER_SANITIZE_SPECIAL_CHARS);
+    $name = filter_var($_POST["name"], FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+    $website = filter_var($_POST["website"], FILTER_SANITIZE_URL);
     
     // Validate and sanitize input data
     $comment = htmlspecialchars($comment);

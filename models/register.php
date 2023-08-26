@@ -1,5 +1,6 @@
 <?php
 session_start();
+session_regenerate_id();
 
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
@@ -23,10 +24,10 @@ require '../vendor/autoload.php';
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
 if (isset($_POST["submit"])) {
-    $fullname = $_POST["fullname"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $confirm_password = $_POST["confirm_password"];
+    $fullname =filter_var($_POST["fullname"], FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+    $password = filter_var($_POST["password"], FILTER_SANITIZE_SPECIAL_CHARS);
+    $confirm_password = filter_var($_POST["confirm_password"], FILTER_SANITIZE_SPECIAL_CHARS);
     $date = $_POST["date"];
 
     // Check if the user already exists in the database
