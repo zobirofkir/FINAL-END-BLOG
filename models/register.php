@@ -24,10 +24,19 @@ require '../vendor/autoload.php';
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
 if (isset($_POST["submit"])) {
-    $fullname =filter_var($_POST["fullname"], FILTER_SANITIZE_SPECIAL_CHARS);
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    $password = filter_var($_POST["password"], FILTER_SANITIZE_SPECIAL_CHARS);
-    $confirm_password = filter_var($_POST["confirm_password"], FILTER_SANITIZE_SPECIAL_CHARS);
+    
+    // if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    //     // Invalid CSRF token, generate a new CSRF token and stop execution
+    //     $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); // Generate a new CSRF token
+    //     http_response_code(403); // Return a Forbidden status code
+    //     echo "CSRF protection: Token mismatch";
+    //     exit; // Stop execution
+    // }    
+
+    $fullname = htmlspecialchars(filter_var($_POST["fullname"], FILTER_SANITIZE_SPECIAL_CHARS), ENT_QUOTES, 'UTF-8');
+    $email = htmlspecialchars(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL), ENT_QUOTES, 'UTF-8');
+    $password = htmlspecialchars(filter_var($_POST["password"], FILTER_SANITIZE_SPECIAL_CHARS), ENT_QUOTES, 'UTF-8');
+    $confirm_password = htmlspecialchars(filter_var($_POST["confirm_password"], FILTER_SANITIZE_SPECIAL_CHARS), ENT_QUOTES, 'UTF-8');
     $date = $_POST["date"];
 
     // Check if the user already exists in the database
@@ -76,15 +85,16 @@ if (isset($_POST["submit"])) {
                 $mail->setFrom('zobirofkir19@gmail.com', 'Zobir'); // Replace with your email and name
                 $mail->addAddress($email, $fullname); // Recipient email and name
                 $mail->Subject = 'Hello ' . $fullname . ', welcome to my blog';
-                $mail->Body = "Thank you $fullname, for registering on our blog, and your email $email has been validated successfully.";
+                $mail->Body = "Thank you " . $fullname . ", for registering on our blog, and your email " . $email . " has been validated successfully.";
                 
                 $mail->send();
                 echo "This user has been registered and an email has been sent.";
             } catch (Exception $e) {
-                echo "You are registered, but you didn't use a valid email address!";            }
+                echo "You are registered, but you didn't use a valid email address!";
+            }
         } else {
             echo "Error while registering the user.";
         }
-    }        
+    }
 }
 ?>

@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["contact"])) {
             $sender_email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
             $mail->setFrom($sender_email, $sender_name);
-            $mail->addAddress('zobirofkir30@gmail.com', 'Recipient Name');
+            $mail->addAddress('zobirofkir30@gmail.com', 'Zobir');
 
             $mail->Subject = $subject;
             $mail->Body = "Message from: $name\nEmail: $email\n\n$message\n\nSubject: $subject";
